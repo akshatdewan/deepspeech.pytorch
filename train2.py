@@ -300,12 +300,6 @@ if __name__ == '__main__':
 
             avg_loss += loss_value
             losses.update(loss_value, inputs.size(0))
-            
-            ## Ha NGUYEN - Modified 02/05/2018
-            # Add tensorboard writer to monitor loss value after each 200-batch
-            #if args.tensorboard and main_proc:
-            #    if (i % 200) == 0:
-            #        tensorboard_writer.add_scalar("loss", loss_value, i)
 
             # compute gradient
             optimizer.zero_grad()
@@ -317,12 +311,6 @@ if __name__ == '__main__':
 
             if args.cuda:
                 torch.cuda.synchronize()
-
-            ## Ha NGUYEN - Modified 02/05/2018
-            # Add tensorboard writer to monitor loss value after each 200-batch
-            if args.tensorboard and main_proc:
-                if (i % 200) == 0:
-                    tensorboard_writer.add_scalar("loss", losses.avg, i)
 
             # measure elapsed time
             batch_time.update(time.time() - end)

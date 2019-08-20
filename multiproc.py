@@ -3,7 +3,8 @@ import sys
 import subprocess
 
 argslist = list(sys.argv)[1:]
-world_size = torch.cuda.device_count()
+#world_size = torch.cuda.device_count()
+world_size = 1
 
 if '--world-size' in argslist:
     argslist[argslist.index('--world-size') + 1] = str(world_size)

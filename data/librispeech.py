@@ -85,7 +85,7 @@ def main():
                 continue
             filename = url.split("/")[-1]
             target_filename = os.path.join(split_dir, filename)
-            if not os.path.exists(target_filename):
+            '''if not os.path.exists(target_filename):
                 wget.download(url, split_dir)
             print("Unpacking {}...".format(filename))
             tar = tarfile.open(target_filename)
@@ -101,11 +101,11 @@ def main():
                                       base_filename=f, root_dir=root)
 
             print("Finished {}".format(url))
-            shutil.rmtree(extracted_dir)
+            shutil.rmtree(extracted_dir)'''
         if split_type == 'train':  # Prune to min/max duration
-            create_manifest(split_dir, 'libri_' + split_type + '_manifest.csv', args.min_duration, args.max_duration)
+            create_manifest(split_dir, 'libri_' + split_type + '10_manifest.csv', args.min_duration, args.max_duration)
         else:
-            create_manifest(split_dir, 'libri_' + split_type + '_manifest.csv')
+            create_manifest(split_dir, 'libri_' + split_type + '10_manifest.csv', args.min_duration, args.max_duration)
 
 
 if __name__ == "__main__":

@@ -164,6 +164,7 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
     def parse_transcript(self, transcript_path):
         with open(transcript_path, 'r', encoding='utf8') as transcript_file:
             transcript = transcript_file.read().replace('\n', '')
+        #print(os.path.getsize(transcript_path.replace('txt', 'wav')))
         transcript = list(filter(None, [self.labels_map.get(x) for x in list(transcript)]))
         return transcript
 
@@ -213,7 +214,28 @@ class BucketingSampler(Sampler):
         super(BucketingSampler, self).__init__(data_source)
         self.data_source = data_source
         ids = list(range(0, len(data_source)))
-        self.bins = [ids[i:i + batch_size] for i in range(0, len(ids), batch_size)]
+        ## Ha NGUYEN - modified 01/05/2018
+        # Make batch size decreases gradually
+        rlen = len(ids)
+        bins = []
+        mbatch_size = batch_size
+        #for i in range(0, len(ids), mbatch_size): 
+        i = 0
+        while (i < len(ids)):
+            #mbatch_size = math.floor(batch_size * rlen / len(data_source))
+            mbatch_size = math.ceil(batch_size * rlen / len(data_source))
+            if mbatch_size < 4:
+                mbatch_size = 4
+            rlen = rlen - mbatch_size
+            if rlen < 0:
+                break
+            bins.append(ids[i:i + mbatch_size])
+            i = i + mbatch_size
+            #print(i)
+            #print (rlen)
+        self.bins = bins
+        #print (len(bins))
+        #self.bins = [ids[i:i + batch_size] for i in range(0, len(ids), batch_size)]
 
     def __iter__(self):
         for ids in self.bins:

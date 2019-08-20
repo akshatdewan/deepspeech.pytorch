@@ -22,6 +22,7 @@ def create_manifest(data_path, output_path, min_duration=None, max_duration=None
 
 def order_and_prune_files(file_paths, min_duration, max_duration):
     print("Sorting manifests...")
+    print(file_paths)
     duration_file_paths = [(path, float(subprocess.check_output(
         ['soxi -D \"%s\"' % path.strip()], shell=True))) for path in file_paths]
     if min_duration and max_duration:
